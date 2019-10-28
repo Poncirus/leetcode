@@ -1,0 +1,26 @@
+/*
+ * @lc app=leetcode id=141 lang=golang
+ *
+ * [141] Linked List Cycle
+ */
+
+// @lc code=start
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func hasCycle(head *ListNode) bool {
+	if head == nil {
+		return false
+	}
+	slow, fast := head, head.Next
+	for fast != nil && fast.Next != nil && slow != fast {
+		slow, fast = slow.Next, fast.Next.Next
+	}
+	return slow == fast
+}
+
+// @lc code=end
