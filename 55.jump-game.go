@@ -46,12 +46,23 @@
 func canJump(nums []int) bool {
 	p := 0
 	
-	for p < len(nums) {
-		i, m := p, 0
-		for t := 0; t < nums[p]; t++ {
-			if nums[p+t] + t > m
+	for p + nums[p] < len(nums) - 1 {
+		if nums[p] == 0 {
+			return false
 		}
+
+		i, m := 1, 0
+		for t := 1; t <= nums[p]; t++ {
+			if nums[p+t] + t > m {
+				m = nums[p+t] + t
+				i = t
+			}
+		}
+
+		p += i
 	}
+
+	return true
 }
 // @lc code=end
 
