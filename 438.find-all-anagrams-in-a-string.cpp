@@ -59,6 +59,8 @@ public:
     vector<int> findAnagrams(string s, string p)
     {
         int len = p.size();
+        if (len > s.size())
+            return vector<int>{};
 
         map<char, int> m;
 
@@ -70,7 +72,7 @@ public:
         vector<int> res;
 
         int end = 0;
-        for (int i = 0; i < s.size() - len; i++)
+        for (int i = 0; i <= s.size() - len; i++)
         {
             while (end < s.size() && end - i < len)
             {
@@ -80,12 +82,16 @@ public:
                     m[s[i]]++;
                     i++;
                 }
+
+                end++;
             }
 
             if (end - i == len)
             {
                 res.push_back(i);
             }
+
+            m[s[i]]++;
         }
 
         return res;
