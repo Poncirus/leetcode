@@ -58,29 +58,43 @@ class Solution
 public:
     int checkRecord(int n)
     {
-        const int M = 1000000007;
-        vector<vector<long>> dp(2, vector<long>(3, 0));
-        dp = {{1, 1, 0}, {1, 0, 0}};
-        for (int i = 1; i < n; ++i)
+        if (n == 1)
+            return 3;
+
+        if (n == 2)
+            return 8;
+
+        int m = 1000000007;
+        int *A = new int[n];
+        int *P = new int[n];
+        int *L = new int[n];
+
+        P[0] = 1;
+        L[0] = 1;
+        L[1] = 3;
+        A[0] = 1;
+        A[1] = 2;
+        A[2] = 4;
+
+        if (n == 1)
+            return 3;
+
+        for (int i = 1; i < n; i++)
         {
-            vector<vector<long>> tmp(2, vector<long>(3, 0));
-            tmp[0][0] = ((dp[0][0] + dp[0][1] + dp[0][2]) % M);
-            tmp[0][1] = dp[0][0] % M;
-            tmp[0][2] = dp[0][1];
-            tmp[1][0] = (((dp[0][0] + dp[0][1] + dp[0][2]) % M + (dp[1][0] + dp[1][1] + dp[1][2]) % M)) % M;
-            tmp[1][1] = dp[1][0] % M;
-            tmp[1][2] = dp[1][1] % M;
-            dp = tmp;
+            A[i - 1] %= m;
+            P[i - 1] %= m;
+            L[i - 1] %= m;
+
+            P[i] = ((A[i - 1] + P[i - 1]) % m + L[i - 1]) % m;
+
+            if (i > 1)
+                L[i] = ((A[i - 1] + P[i - 1]) % m + (A[i - 2] + P[i - 2]) % m) % m;
+
+            if (i > 2)
+                A[i] = ((A[i - 1] + A[i - 2]) % m + A[i - 3]) % m;
         }
-        long res = 0;
-        for (int A = 0; A < 2; ++A)
-        {
-            for (int L = 0; L < 3; ++L)
-            {
-                res += dp[A][L] % M;
-            }
-        }
-        return res % M;
+
+        return ((A[n - 1] % m + P[n - 1] % m) % m + L[n - 1] % m) % m;
     }
 };
 // @lc code=end
